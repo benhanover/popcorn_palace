@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const logger = new Logger('Bootstrap');
@@ -20,6 +21,19 @@ async function bootstrap() {
   // Apply global exception filter
   app.useGlobalFilters(new HttpExceptionFilter());
 
+  // Setup Swagger
+  const config = new DocumentBuilder()
+    .setTitle('Popcorn Palace API')
+    .setDescription('Movie ticket booking system API')
+    .setVersion('1.0')
+    .addTag('movies', 'Movie management endpoints')
+    .addTag('showtimes', 'Showtime management endpoints')
+    .addTag('bookings', 'Ticket booking endpoints')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
+
   try {
     // Get the DataSource instance
     const dataSource = app.get(DataSource);
@@ -27,15 +41,12 @@ async function bootstrap() {
     await dataSource.query('SELECT 1');
     logger.log('✅ Database connection established successfully');
   } catch (error) {
-    // We're still using logger.error here because the error handler service
-    // isn't available during bootstrap
     logger.error(`❌ Database connection failed: ${error.message}`, error.stack);
-
-    // Optional: Exit application if database connection is critical
-    // process.exit(1);
   }
 
-  await app.listen(process.env.SERVER_PORT || 3000);
-  logger.log(`Application is running on port ${process.env.SERVER_PORT || 3000}`);
+  const port = process.env.SERVER_PORT || 3000;
+  await app.listen(port);
+  logger.log(`✅ Application is running on port ${port}`);
+  logger.log(`📚 Swagger documentation available at http://localhost:${port}/api`);
 }
 bootstrap();
