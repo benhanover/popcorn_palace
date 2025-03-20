@@ -41,6 +41,7 @@ export class MoviesController {
     @ApiBadRequestResponse({ description: 'Invalid input data' })
     @ApiConflictResponse({ description: 'Movie with this title already exists' })
     @Post()
+    @HttpCode(HttpStatus.OK)
     create(@Body() createMovieDto: CreateMovieDto): Promise<Movie> {
         return this.moviesService.create(createMovieDto);
     }
@@ -55,6 +56,7 @@ export class MoviesController {
     @ApiBadRequestResponse({ description: 'Invalid input data' })
     @ApiNotFoundResponse({ description: 'Movie not found' })
     @Post('update/:movieTitle')
+    @HttpCode(HttpStatus.OK)
     update(
         @Param('movieTitle') movieTitle: string,
         @Body() updateMovieDto: UpdateMovieDto,

@@ -1,4 +1,9 @@
 // src/common/middleware/request-logger.middleware.ts
+
+/* Description -
+The RequestLoggerMiddleware creates a comprehensive logging system for HTTP traffic in the NestJS application. It assigns a unique ID to each incoming request, logs details about the request (method, URL, IP, user agent), records request bodies for data-modifying operations, measures response time, and logs response status with appropriate severity levels. By intercepting both requests and responses, it provides end-to-end visibility into the API's behavior, helping developers debug issues, monitor performance, and audit system activity. The middleware is particularly useful during development and troubleshooting, as it can optionally display request and response payloads while offering safeguards for sensitive data.
+*/
+
 import { Injectable, NestMiddleware, Logger } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { v4 as uuidv4 } from 'uuid';
@@ -32,7 +37,7 @@ export class RequestLoggerMiddleware implements NestMiddleware {
     // Track timing
     const start = Date.now();
 
-    // Intercept the response
+    // Intercept the response - monkey patch the send method
     const originalSend = res.send;
     res.send = function (body) {
       res.send = originalSend;

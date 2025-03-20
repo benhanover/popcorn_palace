@@ -1,0 +1,55 @@
+Requirements Document
+Project Title: Movie Ticket Booking System “Popcorn Palace”- Backend Development
+________________________________________
+1. Project Overview
+This assignment aims to develop a RESTful API for a movie ticket booking system using Spring Boot. The system will manage movies, showtimes, and ticket bookings.
+You can use the Java with Spring boot or
+JS/TS with NestJs skeletons project we provided.
+________________________________________
+2. Functional Requirements
+2.1 Movie Management
+●	Features:
+○	Add new movies with details: title, genre, duration, rating, release_year
+○	Update movie information.
+○	Delete a movie.
+○	Fetch all movies.
+2.2 Showtime Management
+●	Features:
+○	Add showtimes for movies with details: movie, theater, start_time, end_time,price.
+○	Update showtime details.
+○	Delete a showtime.
+○	Fetch showtime by id.
+●	Constraints:
+○	No overlapping showtimes for the same theater.
+2.3 Ticket Booking System
+●	Features:
+○	Allow customers to book tickets for available showtimes.
+○	Ensure no seat is booked twice for the exact showtime.
+
+
+
+3. Additional Requirements
+3.1	Input Validation & Error Handling
+•	Don’t allow invalid values into the API
+•	In case of error, make sure to return an informative error.
+3.2	DB and persistence:
+•	You can use plain SQL or ORM.
+•	You can use the compose.yml to run a local PostgreSQL instance using Docker.
+3.3 Testing - provide relevant tests to your code implementation
+•	Spring boot - https://docs.spring.io/spring-boot/reference/testing/index.html
+•	NestJs- https://docs.nestjs.com/fundamentals/testing
+3.4	Documentation
+•	Please provide a well-documented readme file (Instructions.md), on how to run build and test the project.
+
+
+
+
+
+4. Submission Guidelines
+•	Once you have completed the assignment, use the HackerRank test invite to submit your Git public repository link. The test will be available for 15 minutes from the moment you start it.
+•	Please ensure your repo is public and accessible, and all the files have been pushed.
+•	For any questions/help needed, please contact us here:
+rm-TDPIsrael@intl.att.com
+•	You can use the Java with Spring boot or JS/TS with NestJs skeletons project we provided.
+•	Use the API description in the readme README.md.to implement the required API’s. Make sure to add your setup, build, and run instructions in Instructions.md file.
+

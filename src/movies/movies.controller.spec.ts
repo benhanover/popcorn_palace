@@ -40,7 +40,7 @@ describe('MoviesController', () => {
     it('should return an array of movies', async () => {
       const result: Movie[] = [
         {
-          id: 1,
+          id: expect.any(Number),
           title: 'Test Movie',
           genre: 'Action',
           duration: 120,
@@ -48,7 +48,6 @@ describe('MoviesController', () => {
           releaseYear: 2023,
         },
       ];
-
       jest.spyOn(service, 'findAll').mockResolvedValue(result);
 
       expect(await controller.findAll()).toBe(result);

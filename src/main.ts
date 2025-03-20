@@ -4,11 +4,12 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const logger = new Logger('Bootstrap');
   const app = await NestFactory.create(AppModule);
-
+  const configService = app.get(ConfigService);
   // Add global validation pipe
   app.useGlobalPipes(
     new ValidationPipe({
@@ -44,7 +45,7 @@ async function bootstrap() {
     logger.error(`❌ Database connection failed: ${error.message}`, error.stack);
   }
 
-  const port = process.env.SERVER_PORT || 3000;
+  const port = configService.get<number>('SERVER_PORT', 3000);
   await app.listen(port);
   logger.log(`✅ Application is running on port ${port}`);
   logger.log(`📚 Swagger documentation available at http://localhost:${port}/api`);

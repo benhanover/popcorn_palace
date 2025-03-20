@@ -1,9 +1,13 @@
+/* Description -
+The ErrorHandlerService provides centralized database error handling throughout the application, transforming low-level database errors into meaningful HTTP exceptions. When database operations fail, this service logs detailed error information and then maps specific PostgreSQL error codes to appropriate HTTP exceptions - converting unique constraint violations to 409 Conflict errors, foreign key violations to 400 Bad Request errors, and malformed UUID inputs to validation errors. It also handles TypeORM-specific exceptions and provides fallback error handling for unexpected issues. By centralizing this logic, the service ensures consistent error responses across all API endpoints, improves error traceability through structured logging, and prevents sensitive database implementation details from leaking into API responses, enhancing both security and user experience.
+*/
+
 import { Injectable, Logger, NotFoundException, BadRequestException, ConflictException } from '@nestjs/common';
 import { QueryFailedError } from 'typeorm';
 
 @Injectable()
 export class ErrorHandlerService {
-    private readonly logger = new Logger(ErrorHandlerService.name);
+    private readonly logger = new Logger('DatabaseErrors');
 
     handleDatabaseError(error: any, operation: string): never {
         this.logger.error(`Database error during ${operation}: ${error.message}`, error.stack);

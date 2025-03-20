@@ -1,3 +1,4 @@
+// test/app.e2e-spec.ts
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
@@ -20,5 +21,9 @@ describe('AppController (e2e)', () => {
       .get('/')
       .expect(200)
       .expect('Hello World!');
+  });
+
+  afterEach(async () => {
+    await app.close();
   });
 });
