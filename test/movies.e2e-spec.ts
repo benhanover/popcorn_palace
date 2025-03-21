@@ -7,8 +7,7 @@ import { Movie } from '../src/movies/entities/movie.entity';
 import { MoviesModule } from '../src/movies/movies.module';
 import { CommonModule } from '../src/common/common.module';
 import { HttpExceptionFilter } from '../src/common/filters/http-exception.filter';
-import { getDataSourceToken } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
+import { ConfigModule } from '@nestjs/config';
 
 describe('Movies API (e2e)', () => {
   let app: INestApplication;
@@ -24,12 +23,21 @@ describe('Movies API (e2e)', () => {
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [
-        // Use in-memory SQLite database for testing
+        ConfigModule.forRoot({
+          isGlobal: true,
+          envFilePath: '.env.test',
+        }),
+        // Use the dedicated test PostgreSQL server instead of SQLite
         TypeOrmModule.forRoot({
-          type: 'sqlite',
-          database: ':memory:',
+          type: 'postgres',
+          host: process.env.TEST_DB_HOST || 'localhost',
+          port: parseInt(process.env.TEST_DB_PORT || '5433'), // Test DB runs on port 5433
+          username: process.env.TEST_DB_USERNAME || 'popcorn-palace-test',
+          password: process.env.TEST_DB_PASSWORD || 'popcorn-palace-test',
+          database: process.env.TEST_DB_NAME || 'popcorn-palace-test',
           entities: [Movie],
-          synchronize: true,
+          synchronize: true, // Automatically create tables for testing
+          logging: false,
         }),
         CommonModule,
         MoviesModule,
@@ -58,7 +66,7 @@ describe('Movies API (e2e)', () => {
     } catch (e) {
       // Ignore errors if movie doesn't exist
     }
-  });
+  }, 30000); // Increase timeout to 30 seconds for database connection
 
   describe('POST /movies', () => {
     it('should create a new movie', () => {
@@ -115,18 +123,6 @@ describe('Movies API (e2e)', () => {
   });
 
   describe('GET /movies/all', () => {
-    // Try creating a movie directly to ensure we have something to retrieve
-    beforeEach(async () => {
-      try {
-        await request(app.getHttpServer())
-          .post('/movies')
-          .send(testMovie)
-          .send();
-      } catch (e) {
-        // Ignore errors
-      }
-    });
-
     it('should return all movies including the test movie', () => {
       return request(app.getHttpServer())
         .get('/movies/all')
@@ -160,7 +156,7 @@ describe('Movies API (e2e)', () => {
             .expect((res) => {
               const updatedMovie = res.body.find(movie => movie.title === testMovie.title);
               expect(updatedMovie).toBeDefined();
-              expect(updatedMovie.rating).toBe(updateData.rating);
+              expect(parseFloat(updatedMovie.rating)).toBe(updateData.rating); // Parse as number to handle PostgreSQL decimal format
               expect(updatedMovie.genre).toBe(updateData.genre);
               // Other fields should remain unchanged
               expect(updatedMovie.duration).toBe(testMovie.duration);
@@ -219,5 +215,5 @@ describe('Movies API (e2e)', () => {
 
     // Close the app (this will also close all connections)
     await app.close();
-  });
+  }, 10000); // Added timeout for cleanup
 });

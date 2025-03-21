@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { MoviesModule } from './movies/movies.module';
 import { CommonModule } from './common/common.module';
 import { RequestLoggerMiddleware } from './common/middleware/request-logger.middleware';
+import { ShowtimesModule } from './showtimes/showtimes.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { RequestLoggerMiddleware } from './common/middleware/request-logger.midd
     DatabaseModule,
     CommonModule,
     MoviesModule,
+    ShowtimesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
