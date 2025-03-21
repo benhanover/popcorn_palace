@@ -180,6 +180,49 @@ describe('Showtimes API (e2e)', () => {
         .expect(409);
     });
 
+
+
+
+    it('should reject overlapping showtime with end inside another showtime', async () => {
+      await request(app.getHttpServer())
+        .post('/showtimes')
+        .send({
+          movieId: testMovieId,
+          price: 45.0,
+          theater: 'E2E Test Theater',
+          startTime: '2025-02-14T10:30:00.000Z',
+          endTime: '2025-02-14T12:30:00.000Z',
+        })
+        .expect(409);
+    });
+
+    it('should reject overlapping showtime with start inside another showtime', async () => {
+      await request(app.getHttpServer())
+        .post('/showtimes')
+        .send({
+          movieId: testMovieId,
+          price: 45.0,
+          theater: 'E2E Test Theater',
+          startTime: '2025-02-14T13:00:00.000Z',
+          endTime: '2025-02-14T15:00:00.000Z',
+        })
+        .expect(409);
+    });
+
+    it('should reject showtime completely enclosing an existing showtime', async () => {
+      await request(app.getHttpServer())
+        .post('/showtimes')
+        .send({
+          movieId: testMovieId,
+          price: 45.0,
+          theater: 'E2E Test Theater',
+          startTime: '2025-02-14T11:00:00.000Z',
+          endTime: '2025-02-14T15:00:00.000Z',
+        })
+        .expect(409);
+    });
+
+
     it('should allow non-overlapping showtime in the same theater', async () => {
       const response = await request(app.getHttpServer())
         .post('/showtimes')
