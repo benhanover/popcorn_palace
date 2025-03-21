@@ -1,4 +1,5 @@
 // test/showtimes.e2e-spec.ts
+import { DataSource } from 'typeorm';
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
@@ -452,14 +453,16 @@ describe('Showtimes API (e2e)', () => {
     }, 10000); // Add timeout
   });
 
+
   afterAll(async () => {
-    // Clean up - delete the test movie (which should cascade delete all associated showtimes)
     try {
-      await request(app.getHttpServer())
-        .delete(`/movies/${testMovie.title}`)
-        .send();
+      const dataSource = app.get(DataSource);
+
+      // Clear tables in reverse order to avoid foreign key constraints
+      await dataSource.query('DELETE FROM showtime');
+      await dataSource.query('DELETE FROM movie');
     } catch (e) {
-      console.log('Error cleaning up test movie:', e.message);
+      console.error('Error during final cleanup:', e.message);
     }
 
     // Close the app (this will also close all connections)
