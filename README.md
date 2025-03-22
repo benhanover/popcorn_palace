@@ -1,113 +1,158 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Popcorn Palace Movie Ticket Booking System - Instructions
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This project implements the movie ticket booking system as specified in requirements.txt and PROVIDED_README.md.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Prerequisites
 
-# Popcorn Palace Movie Ticket Booking System
+- Node.js (v16 or later)
+- npm (v7 or later)
+- Docker and Docker Compose for running PostgreSQL
 
-## Overview
-The Popcorn Palace Movie Ticket Booking System is a backend service designed to handle various operations related to movie,showtime, and booking management.
+## Setup & Installation
 
-## Functionality
-The system provides the following APIs:
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-- **Movie API**: Manages movies available on the platform.
-- **Showtime API**: Manages movies showtime on the theaters.
-- **Booking API**: Manages the movie tickets booking.
+## Environment Setup
 
-## Technical Aspects
-The system is built using Java Spring Boot, leveraging its robust framework for creating RESTful APIs. Data persistence can be managed using an in-memory database like H2 for simplicity, or a more robust solution like PostgreSQL for production.
+Simply rename the example files:
 
-## Homework Task
-Candidates are expected to design and implement the above APIs, adhering to RESTful principles.
+```bash
+cp .env.example .env
+cp .env.test.example .env.test
+```
 
-## APIs
+## Running the PostgreSQL Database
 
-### Movies  APIs
+The project uses PostgreSQL as its database. You can start it using Docker Compose:
 
-| API Description           | Endpoint               | Request Body                          | Response Status | Response Body |
-|---------------------------|------------------------|---------------------------------------|-----------------|---------------|
-| Get all movies | GET /movies/all | | 200 OK | [ { "id": 12345, "title": "Sample Movie Title 1", "genre": "Action", "duration": 120, "rating": 8.7, "releaseYear": 2025 }, { "id": 67890, "title": "Sample Movie Title 2", "genre": "Comedy", "duration": 90, "rating": 7.5, "releaseYear": 2024 } ] |
-| Add a movie | POST /movies | { "title": "Sample Movie Title", "genre": "Action", "duration": 120, "rating": 8.7, "releaseYear": 2025 } | 200 OK | { "id": 1, "title": "Sample Movie Title", "genre": "Action", "duration": 120, "rating": 8.7, "releaseYear": 2025 }|
-| Update a movie | POST /movies/update/{movieTitle} | { "title": "Sample Movie Title", "genre": "Action", "duration": 120, "rating": 8.7, "releaseYear": 2025 } | 200 OK | |
-| DELETE /movies/{movieTitle} | | 200 OK | |
+```bash
+# Start the development database
+docker compose up -d
+```
+
+This will start PostgreSQL on port 5432 with the following credentials:
+
+- Username: popcorn-palace
+- Password: popcorn-palace
+- Database: popcorn-palace
+
+## Running the Application
+
+### Development Mode
+
+To run the application in development mode with auto-reload:
+
+```bash
+npm run start:dev
+```
+
+The server will start on port 3000 by default. You can access the APIs at `http://localhost:3000/`.
+
+### Production Mode
+
+To build and run the application in production mode:
+
+```bash
+# Build the application
+npm run build
+
+# Run the application
+npm run start:prod
+```
+
+## API Documentation
+
+API documentation is available through Swagger UI at:
+`http://localhost:3000/api` when the application is running.
+
+## Testing
+
+### Unit Tests
+
+Run unit tests:
+
+```bash
+npm run test
+```
+
+Watch mode:
+
+```bash
+npm run test:watch
+```
+
+### End-to-End Tests
+
+The end-to-end tests require a separate test database, which can be started using:
+
+```bash
+# Start the test database
+npm run start:test-db
+```
+
+Then run the e2e tests:
+
+```bash
+# Run all e2e tests
+npm run test:e2e
+
+# Run specific e2e tests
+npm run test:e2e:movies
+npm run test:e2e:showtimes
+```
+
+To stop the test database after finishing tests:
+
+```bash
+npm run stop:test-db
+```
+
+### Postman Collection
+
+For easier API testing, a Postman collection is included in this project. To use it:
+
+1. Import the collection file from the project:
+   - Open Postman
+   - Click "Import" button
+   - Select the `Popcorn_Palace_API.postman_collection.json` file from the project directory
+2. The collection includes pre-configured requests for all API endpoints
+
+This collection makes it easy to manually test and interact with the API without writing code.
+
+## Project Structure
+
+- `src/` - Source code directory
+  - `app.module.ts` - Main application module
+  - `main.ts` - Application entry point
+  - `movies/` - Movies API implementation
+  - `showtimes/` - Showtimes API implementation
+  - `bookings/` - Bookings API implementation
+  - `common/` - Common utilities, filters, and middleware
+  - `database/` - Database configuration
+- `test/` - End-to-end tests
+
+## API Endpoints
+
+The application implements the following APIs:
+
+### Movies APIs
+
+- `GET /movies/all` - Get all movies
+- `POST /movies` - Add a movie
+- `POST /movies/update/{movieTitle}` - Update a movie
+- `DELETE /movies/{movieTitle}` - Delete a movie
 
 ### Showtimes APIs
 
-| API Description            | Endpoint                           | Request Body                                                                                                                                      | Response Status | Response Body                                                                                                                                                                                                                                                                   |
-|----------------------------|------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Get showtime by ID | GET /showtimes/{showtimeId} |                                                                                                                                                   | 200 OK | { "id": 1, "price":50.2, "movieId": 1, "theater": "Sample Theater", "startTime": "2025-02-14T11:47:46.125405Z", "endTime": "2025-02-14T14:47:46.125405Z" }                                                                                                                      | | Delete a restaurant        | DELETE /restaurants/{id}           |                                                                              | 204 No Content  |                                                                                                        |
-| Add a showtime | POST /showtimes | { "movieId": 1, "price":20.2, "theater": "Sample Theater", "startTime": "2025-02-14T11:47:46.125405Z", "endTime": "2025-02-14T14:47:46.125405Z" } | 200 OK | { "id": 1, "price":50.2,"movieId": 1, "theater": "Sample Theater", "startTime": "2025-02-14T11:47:46.125405Z", "endTime": "2025-02-14T14:47:46.125405Z" }                                                                                                                                    |
-| Update a showtime | POST /showtimes/update/{showtimeId}| { "movieId": 1, "price":50.2, "theater": "Sample Theater", "startTime": "2025-02-14T11:47:46.125405Z", "endTime": "2025-02-14T14:47:46.125405Z" } | 200 OK |                                                                                                                                                                                                                                                                                 |
-| Delete a showtime | DELETE /showtimes/{showtimeId} |                                                                                                                                                   | 200 OK |                                                                                                                                                                                                                                                                                 |
+- `GET /showtimes/{showtimeId}` - Get showtime by ID
+- `POST /showtimes` - Add a showtime
+- `POST /showtimes/update/{showtimeId}` - Update a showtime
+- `DELETE /showtimes/{showtimeId}` - Delete a showtime
 
+### Bookings APIs
 
-
-
-### bookings APIs
-
-| API Description           | Endpoint       | Request Body                                     | Response Status | Response Body                                                                                                                                          |
-|---------------------------|----------------|--------------------------------------------------|-----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Book a ticket | POST /bookings | { "showtimeId": 1, "seatNumber": 15 , userId:"84438967-f68f-4fa0-b620-0f08217e76af"} | 200 OK | { "bookingId":"d1a6423b-4469-4b00-8c5f-e3cfc42eacae" }                                                                                                 |
-
-
-
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
-
-```bash
-$ npm install
-```
-
-## Running the app
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+- `POST /bookings` - Book a ticket
