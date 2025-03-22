@@ -17,6 +17,8 @@ const createMockRepository = <T>(): MockRepository<T> => ({
   create: jest.fn(),
   save: jest.fn(),
   delete: jest.fn(),
+  // Add the query method that was missing
+  query: jest.fn().mockResolvedValue([]),
   createQueryBuilder: jest.fn(() => ({
     where: jest.fn().mockReturnThis(),
     andWhere: jest.fn().mockReturnThis(),
@@ -59,6 +61,8 @@ describe('ShowtimesService', () => {
             create: jest.fn(),
             save: jest.fn(),
             delete: jest.fn(),
+            // Add the query method that was missing
+            query: jest.fn().mockResolvedValue([]),
             createQueryBuilder: jest.fn().mockReturnValue(mockQueryBuilder),
           },
         },
@@ -141,7 +145,7 @@ describe('ShowtimesService', () => {
       mockMoviesService.findAll.mockResolvedValue([{ id: 1, title: 'Test Movie' }]);
 
       // Mock no overlapping showtimes
-      mockQueryBuilder.getMany.mockResolvedValue([]);
+      showtimeRepository.query.mockResolvedValue([]);
 
       // Mock showtime creation
       showtimeRepository.create.mockReturnValue(mockShowtime);
@@ -150,7 +154,7 @@ describe('ShowtimesService', () => {
       const result = await service.create(createShowtimeDto);
 
       expect(mockMoviesService.findAll).toHaveBeenCalled();
-      expect(showtimeRepository.createQueryBuilder).toHaveBeenCalled();
+      expect(showtimeRepository.query).toHaveBeenCalled();
       expect(showtimeRepository.create).toHaveBeenCalledWith({
         ...createShowtimeDto,
         startTime: expect.any(Date),
@@ -176,17 +180,17 @@ describe('ShowtimesService', () => {
       // Mock overlapping showtimes
       const overlappingShowtime = {
         id: 2,
-        movieId: 2,
+        movie_id: 2,
         theater: 'Sample Theater',
-        startTime: new Date('2025-02-14T12:00:00.000Z'),
-        endTime: new Date('2025-02-14T14:00:00.000Z'),
+        start_time: new Date('2025-02-14T12:00:00.000Z'),
+        end_time: new Date('2025-02-14T14:00:00.000Z'),
         price: 45.0,
       };
-      mockQueryBuilder.getMany.mockResolvedValue([overlappingShowtime]);
+      showtimeRepository.query.mockResolvedValue([overlappingShowtime]);
 
       await expect(service.create(createShowtimeDto)).rejects.toThrow(ConflictException);
       expect(mockMoviesService.findAll).toHaveBeenCalled();
-      expect(showtimeRepository.createQueryBuilder).toHaveBeenCalled();
+      expect(showtimeRepository.query).toHaveBeenCalled();
       expect(showtimeRepository.save).not.toHaveBeenCalled();
     });
 
@@ -218,7 +222,7 @@ describe('ShowtimesService', () => {
       showtimeRepository.findOne.mockResolvedValue(existingShowtime);
 
       // Mock no overlapping showtimes
-      mockQueryBuilder.getMany.mockResolvedValue([]);
+      showtimeRepository.query.mockResolvedValue([]);
 
       // Mock successful save
       showtimeRepository.save.mockResolvedValue({
@@ -264,13 +268,13 @@ describe('ShowtimesService', () => {
       // Mock overlapping showtimes
       const overlappingShowtime = {
         id: 2,
-        movieId: 2,
+        movie_id: 2,
         theater: 'Sample Theater',
-        startTime: new Date('2025-02-14T15:00:00.000Z'),
-        endTime: new Date('2025-02-14T17:00:00.000Z'),
+        start_time: new Date('2025-02-14T15:00:00.000Z'),
+        end_time: new Date('2025-02-14T17:00:00.000Z'),
         price: 45.0,
       };
-      mockQueryBuilder.getMany.mockResolvedValue([overlappingShowtime]);
+      showtimeRepository.query.mockResolvedValue([overlappingShowtime]);
 
       const updateWithNewTime: UpdateShowtimeDto = {
         startTime: '2025-02-14T14:30:00.000Z',
@@ -279,7 +283,7 @@ describe('ShowtimesService', () => {
 
       await expect(service.update(1, updateWithNewTime)).rejects.toThrow(ConflictException);
       expect(showtimeRepository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
-      expect(showtimeRepository.createQueryBuilder).toHaveBeenCalled();
+      expect(showtimeRepository.query).toHaveBeenCalled();
       expect(showtimeRepository.save).not.toHaveBeenCalled();
     });
 
