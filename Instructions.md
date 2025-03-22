@@ -111,6 +111,18 @@ To stop the test database after finishing tests:
 npm run stop:test-db
 ```
 
+### Postman Collection
+
+For easier API testing, a Postman collection is included in this project. To use it:
+
+1. Import the collection file from the project:
+   - Open Postman
+   - Click "Import" button
+   - Select the `Popcorn_Palace_API.postman_collection.json` file from the project directory
+2. The collection includes pre-configured requests for all API endpoints
+
+This collection makes it easy to manually test and interact with the API without writing code.
+
 ## Project Structure
 
 - `src/` - Source code directory
@@ -122,15 +134,6 @@ npm run stop:test-db
   - `common/` - Common utilities, filters, and middleware
   - `database/` - Database configuration
 - `test/` - End-to-end tests
-
-## Environment Configuration
-
-Environment variables are defined in:
-
-- `.env` - Development environment
-- `.env.test` - Test environment
-
-You can customize these files to change database connection parameters and other settings.
 
 ## API Endpoints
 

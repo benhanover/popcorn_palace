@@ -1,0 +1,868 @@
+{
+	"info": {
+		"_postman_id": "dafd9561-1627-440a-9813-99a6592ecb52",
+		"name": "Popcorn Palace API Tests",
+		"description": "Manual test collection for Popcorn Palace movie ticket booking system",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14395810"
+	},
+	"item": [
+		{
+			"name": "1. Movies API",
+			"item": [
+				{
+					"name": "Get All Movies (Empty initially)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/movies/all",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"movies",
+								"all"
+							]
+						},
+						"description": "Should return an empty array initially"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Movie 1 (Star Wars)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Star Wars: A New Hope\",\n    \"genre\": \"Sci-Fi\",\n    \"duration\": 121,\n    \"rating\": 8.6,\n    \"releaseYear\": 1977\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/movies",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"movies"
+							]
+						},
+						"description": "Create a Star Wars movie"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Movie 2 (Avengers)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Avengers: Endgame\",\n    \"genre\": \"Action\",\n    \"duration\": 181,\n    \"rating\": 8.4,\n    \"releaseYear\": 2019\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/movies",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"movies"
+							]
+						},
+						"description": "Create an Avengers movie"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Movie 3 (Inception)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Inception\",\n    \"genre\": \"Sci-Fi/Thriller\",\n    \"duration\": 148,\n    \"rating\": 8.8,\n    \"releaseYear\": 2010\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/movies",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"movies"
+							]
+						},
+						"description": "Create Inception movie"
+					},
+					"response": []
+				},
+				{
+					"name": "Duplicate Movie (Error Case)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Inception\",\n    \"genre\": \"Sci-Fi/Drama\",\n    \"duration\": 145,\n    \"rating\": 8.7,\n    \"releaseYear\": 2010\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/movies",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"movies"
+							]
+						},
+						"description": "Should return an error because title already exists"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid Movie (Error Case)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"\",\n    \"genre\": \"Drama\",\n    \"duration\": 0,\n    \"rating\": 11,\n    \"releaseYear\": 1800\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/movies",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"movies"
+							]
+						},
+						"description": "Should return validation errors"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Movies (After creating)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/movies/all",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"movies",
+								"all"
+							]
+						},
+						"description": "Should return the three movies we created"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Movie (Avengers)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"rating\": 9.0,\n    \"genre\": \"Action/Superhero\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/movies/update/Avengers: Endgame",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"movies",
+								"update",
+								"Avengers: Endgame"
+							]
+						},
+						"description": "Update the Avengers movie rating and genre"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Non-existent Movie (Error Case)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"rating\": 8.5\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/movies/update/Non-Existent Movie",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"movies",
+								"update",
+								"Non-Existent Movie"
+							]
+						},
+						"description": "Should return 404 error"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Inception Movie",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/movies/Inception",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"movies",
+								"Inception"
+							]
+						},
+						"description": "Delete the Inception movie"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Non-existent Movie (Error Case)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/movies/Non-Existent Movie",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"movies",
+								"Non-Existent Movie"
+							]
+						},
+						"description": "Should return 404 error"
+					},
+					"response": []
+				}
+			],
+			"description": "Tests for the Movies API endpoints"
+		},
+		{
+			"name": "2. Showtimes API",
+			"item": [
+				{
+					"name": "Create Showtime 1 (Star Wars)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"movieId\": 1,\n    \"price\": 12.50,\n    \"theater\": \"Cinema 1\",\n    \"startTime\": \"2025-03-25T18:00:00.000Z\",\n    \"endTime\": \"2025-03-25T20:01:00.000Z\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/showtimes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"showtimes"
+							]
+						},
+						"description": "Create a showtime for Star Wars movie"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Showtime 2 (Avengers)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"movieId\": 2,\n    \"price\": 15.00,\n    \"theater\": \"Cinema 2\",\n    \"startTime\": \"2025-03-25T19:00:00.000Z\",\n    \"endTime\": \"2025-03-25T22:01:00.000Z\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/showtimes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"showtimes"
+							]
+						},
+						"description": "Create a showtime for Avengers movie"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Showtime 3 (Star Wars - Different Time)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"movieId\": 1,\n    \"price\": 12.50,\n    \"theater\": \"Cinema 1\",\n    \"startTime\": \"2025-03-25T21:00:00.000Z\",\n    \"endTime\": \"2025-03-25T23:01:00.000Z\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/showtimes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"showtimes"
+							]
+						},
+						"description": "Create another showtime for Star Wars in the same theater, but at a different time"
+					},
+					"response": []
+				},
+				{
+					"name": "Overlapping Showtime (Error Case)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"movieId\": 2,\n    \"price\": 14.00,\n    \"theater\": \"Cinema 1\",\n    \"startTime\": \"2025-03-25T19:30:00.000Z\",\n    \"endTime\": \"2025-03-25T22:30:00.000Z\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/showtimes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"showtimes"
+							]
+						},
+						"description": "Should fail because it overlaps with Showtime 3 in Cinema 1"
+					},
+					"response": []
+				},
+				{
+					"name": "Entirely Overlapping Showtime (Error Case)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"movieId\": 2,\n    \"price\": 14.00,\n    \"theater\": \"Cinema 1\",\n    \"startTime\": \"2025-03-25T17:00:00.000Z\",\n    \"endTime\": \"2025-03-25T23:30:00.000Z\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/showtimes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"showtimes"
+							]
+						},
+						"description": "Should fail because it entirely encompasses other showtime slots"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid Showtime Data (Error Case)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"movieId\": 1,\n    \"price\": -10,\n    \"theater\": \"\",\n    \"startTime\": \"invalid-date\",\n    \"endTime\": \"2025-03-25T20:00:00.000Z\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/showtimes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"showtimes"
+							]
+						},
+						"description": "Should return validation errors"
+					},
+					"response": []
+				},
+				{
+					"name": "Non-existent Movie Showtime (Error Case)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"movieId\": 999,\n    \"price\": 15.00,\n    \"theater\": \"Cinema 3\",\n    \"startTime\": \"2025-03-25T15:00:00.000Z\",\n    \"endTime\": \"2025-03-25T17:00:00.000Z\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/showtimes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"showtimes"
+							]
+						},
+						"description": "Should fail because movie ID doesn't exist"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Showtime 1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/showtimes/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"showtimes",
+								"1"
+							]
+						},
+						"description": "Get showtime by ID 1"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Non-existent Showtime (Error Case)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/showtimes/999",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"showtimes",
+								"999"
+							]
+						},
+						"description": "Should return 404 error"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Showtime 1 (Price Only)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"price\": 14.00\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/showtimes/update/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"showtimes",
+								"update",
+								"1"
+							]
+						},
+						"description": "Update the price of showtime 1"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Showtime 2 (Different Theater)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"theater\": \"Cinema 3\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/showtimes/update/2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"showtimes",
+								"update",
+								"2"
+							]
+						},
+						"description": "Update the theater of showtime 2"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Showtime with Invalid Times (Error Case)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"startTime\": \"2025-03-25T22:00:00.000Z\",\n    \"endTime\": \"2025-03-25T20:00:00.000Z\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/showtimes/update/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"showtimes",
+								"update",
+								"1"
+							]
+						},
+						"description": "Should fail because end time is before start time"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Creating Overlap (Error Case)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"startTime\": \"2025-03-25T20:30:00.000Z\",\n    \"endTime\": \"2025-03-25T22:30:00.000Z\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/showtimes/update/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"showtimes",
+								"update",
+								"1"
+							]
+						},
+						"description": "Should fail because it creates overlap with Showtime 3"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Showtime 3",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/showtimes/3",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"showtimes",
+								"3"
+							]
+						},
+						"description": "Delete the showtime with ID 3"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Non-existent Showtime (Error Case)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/showtimes/999",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"showtimes",
+								"999"
+							]
+						},
+						"description": "Should return 404 error"
+					},
+					"response": []
+				}
+			],
+			"description": "Tests for the Showtimes API endpoints"
+		},
+		{
+			"name": "3. Bookings API",
+			"item": [
+				{
+					"name": "Book Ticket 1 for Showtime 1",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"showtimeId\": 1,\n    \"seatNumber\": 15,\n    \"userId\": \"84438967-f68f-4fa0-b620-0f08217e76af\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/bookings",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"bookings"
+							]
+						},
+						"description": "Book seat 15 for showtime 1"
+					},
+					"response": []
+				},
+				{
+					"name": "Book Ticket 2 for Showtime 1",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"showtimeId\": 1,\n    \"seatNumber\": 16,\n    \"userId\": \"84438967-f68f-4fa0-b620-0f08217e76af\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/bookings",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"bookings"
+							]
+						},
+						"description": "Book seat 16 for showtime 1"
+					},
+					"response": []
+				},
+				{
+					"name": "Book Ticket for Different User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"showtimeId\": 1,\n    \"seatNumber\": 17,\n    \"userId\": \"5c6f81d1-e2f4-4a76-b790-c4d7c9c10e6a\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/bookings",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"bookings"
+							]
+						},
+						"description": "Book seat 17 for showtime 1 with a different user"
+					},
+					"response": []
+				},
+				{
+					"name": "Book Already Booked Seat (Error Case)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"showtimeId\": 1,\n    \"seatNumber\": 15,\n    \"userId\": \"5c6f81d1-e2f4-4a76-b790-c4d7c9c10e6a\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/bookings",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"bookings"
+							]
+						},
+						"description": "Should fail because seat 15 is already booked for showtime 1"
+					},
+					"response": []
+				},
+				{
+					"name": "Book for Non-existent Showtime (Error Case)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"showtimeId\": 999,\n    \"seatNumber\": 15,\n    \"userId\": \"84438967-f68f-4fa0-b620-0f08217e76af\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/bookings",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"bookings"
+							]
+						},
+						"description": "Should fail because showtime doesn't exist"
+					},
+					"response": []
+				},
+				{
+					"name": "Book with Invalid Data (Error Case)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"showtimeId\": 1,\n    \"seatNumber\": -5,\n    \"userId\": \"not-a-valid-uuid\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/bookings",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"bookings"
+							]
+						},
+						"description": "Should fail with validation errors"
+					},
+					"response": []
+				}
+			],
+			"description": "Tests for the Bookings API endpoints"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000",
+			"type": "string"
+		}
+	]
+}
